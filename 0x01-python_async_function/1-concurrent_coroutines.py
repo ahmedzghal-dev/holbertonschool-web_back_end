@@ -16,4 +16,4 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
         delay = await wait_random(max_delay)
         delays.append(delay)
         delays = sorted(delays)
-    return
+    return delays
