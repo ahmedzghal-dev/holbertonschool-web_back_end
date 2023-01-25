@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-""" Create a measure_time function with integers n
-and max_delay as arguments that measures the total
-execution time """
-
+"""The function measure_time takes the time before and
+after running the wait_n function from the imported
+module 1-concurrent_coroutines. It then calculates the difference,
+divides it by 2 and returns the resulting float as the total time taken.
+"""
 import time
 from typing import List
 import random
@@ -11,8 +12,13 @@ wait_n = __import__('1-concurrent_coroutines').wait_n
 
 
 def measure_time(n: int, max_delay: int = 10) -> float:
-    """returns total_time / n. Your function should
-    return a float."""
+    """_summary_
+    Args:
+        n (int): _description_
+        max_delay (int): _description_
+    Returns:
+        float: _description_
+    """
     start = time.time()
     asyncio.run(wait_n(n, max_delay))
     end = time.time()
