@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-''' Create a class FIFO Cache that inherits from
+''' Create a class FIFOCache that inherits from
 BaseCaching and is a caching system '''
 
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
-    """FIFO"""
+    ''' FIFO  '''
+
     def __init__(self):
         super().__init__()
         self.key_indexes = []
