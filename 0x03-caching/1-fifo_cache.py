@@ -6,19 +6,28 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFO_Cache(BaseCaching):
+    """FIFO"""
     def __init__(self):
         super().__init__()
+        self.key_indexes = []
 
     def put(self, key, item):
-        if key is None or item is None:
-            return None
-        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            discard_key = next(iter(self.cache_data))
-            self.cache_data.pop(discard_key)
-            print("DISCARD: {}".format(discard_key))
-        self.cache_data[key] = item
+        ''' insert item to dict '''
+        if key and item:
+            if key in self.cache_data:
+                self.cache_data[key] = item
+                return
+
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                item_discarded = self.key_indexes.pop(0)
+                del self.cache_data[item_discarded]
+                print("DISCARD:", item_discarded)
+
+            self.cache_data[key] = item
+            self.key_indexes.append(key)
 
     def get(self, key):
-        if key is None or key not in self.cache_data:
-            return None
-        return self.cache_data[key]
+        ''' get item from dict '''
+        if key in self.cache_data:
+            return self.cache_data[key]
+        return None
