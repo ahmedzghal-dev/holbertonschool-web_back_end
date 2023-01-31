@@ -40,16 +40,16 @@ class Server:
         """ takes two integer arguments page with
         default value 1 and page_size with
         default value 10"""
-        assert isinstance(page, int) and page > 0,
-        assert isinstance(page_size, int) and page_size > 0,
+        assert type(page) == int or type(page_size) == int
+        assert page > 0 or page_size > 0
+        mydataset = self.dataset()
+        indexes = index_range(page, page_size)
+        dataset_length = len(mydataset)
 
-        start, end = index_range(page, page_size)
-        dataset = self.dataset()
+        if indexes[0] < dataset_length and indexes[1] <= dataset_length:
+            return mydataset[indexes[0]:indexes[1]]
 
-        if start >= len(dataset):
-            return []
-
-        return dataset[start:end]
+        return []
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
         """takes the same arguments (and defaults) as get_page
