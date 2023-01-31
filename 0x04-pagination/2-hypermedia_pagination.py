@@ -37,6 +37,9 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """ takes two integer arguments page with
+        default value 1 and page_size with
+        default value 10"""
         assert isinstance(page, int) and page > 0,
         assert isinstance(page_size, int) and page_size > 0,
 
@@ -49,7 +52,9 @@ class Server:
         return dataset[start:end]
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
-        """Hypermedia pagination """
+        """takes the same arguments (and defaults) as get_page
+        and returns a dictionary containing the following key-value
+        pairs"""
         mydataset = self.dataset()
         data = self.get_page(page, page_size)
         page_size = len(data)
