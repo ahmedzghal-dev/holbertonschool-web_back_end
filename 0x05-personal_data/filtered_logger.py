@@ -33,7 +33,7 @@ class RedactingFormatter(logging.Formatter):
                              f'{field}={redaction}{separator}', message)
         return message
 
-    def get_logger():
+    def get_logger() -> logging.Logger:
         """ takes no arguments and returns
         a logging.Logger object"""
         logger = logging.getLogger("user_data")
