@@ -46,7 +46,7 @@ class RedactingFormatter(logging.Formatter):
         logger.addHandler(stream_handler)
         return logger
 
-    def get_db():
+    def get_db() -> connection.MySQLConnection:
         host = os.environ.get("PERSONAL_DATA_DB_HOST", "localhost")
         user = os.environ.get("PERSONAL_DATA_DB_USERNAME", "root")
         password = os.environ.get("PERSONAL_DATA_DB_PASSWORD", "")
