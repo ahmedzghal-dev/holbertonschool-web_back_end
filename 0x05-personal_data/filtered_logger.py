@@ -5,6 +5,10 @@ returns the log message obfuscated"""
 import re
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
     """returns the log message obfuscated"""
-    return re.sub("|".join(fields), redaction, message, flags=re.IGNORECASE)
+    for field in fields:
+        message = re.sub(f'{field}=(.*?){sepatator}',
+                         f'{field}={redaction}{sepatator}', message)
+    return message
