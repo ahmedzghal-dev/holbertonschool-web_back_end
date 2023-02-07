@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
-"""API authentication."""
-
+"""
+Auth class
+"""
 from flask import request
 from typing import List, TypeVar
 
 
 class Auth():
-    """auth"""
+    """
+    auth class description
+    """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """require auth"""
+        """
+        require auth function
+        """
+
         return False
 
     def authorization_header(self, request=None) -> str:
-        """authorization header"""
+        """
+        authorization_header function
+        """
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """current user"""
+        """
+        get current user function
+        """
+
         return None
