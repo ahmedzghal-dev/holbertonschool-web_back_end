@@ -24,7 +24,7 @@ class Auth():
             return True
 
         for excluded_path in excluded_paths:
-            if path == excluded_path or path.startswith(excluded_path + "/"):
+            if path == excluded_path or path.startswith(excluded_path[:-1]):
                 return False
 
         return True
