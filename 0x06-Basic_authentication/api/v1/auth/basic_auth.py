@@ -4,6 +4,8 @@ BasicAuth class
 """
 from api.v1.auth.auth import Auth
 import base64
+from typing import TypeVar, Tuple
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -52,3 +54,21 @@ class BasicAuth(Auth):
             return None, None
         email, password = decoded_base64_authorization_header.split(":")
         return email, password
+
+    def user_object_from_credentials(
+            self,
+            user_email: str,
+            user_pwd: str) -> TypeVar('User'):
+        """
+        user object from credentails
+        """
+        if not isinstance(user_email, str) or not isinstance(user_pwd, str):
+            return None
+        try:
+            users = User.search({'email': user_email})
+        except Exception:
+            return None
+        for i in users:
+            if i.is_valid_password(user_pwd):
+                return i
+        return None
