@@ -42,7 +42,7 @@ class BasicAuth(Auth):
             return None
 
     def extract_user_credentials(
-            self, decoded_base64_authorization_header: str) -> (str, str):
+            self, decoded_base64_authorization_header: str) -> Tuple[str, str]:
         """
         function to extract user credentails
         """
@@ -50,10 +50,12 @@ class BasicAuth(Auth):
             return None, None
         if not isinstance(decoded_base64_authorization_header, str):
             return None, None
-        if ":" not in decoded_base64_authorization_header:
+
+        try:
+            email, password = decoded_base64_authorization_header.split(":", 1)
+            return email, password
+        except ValueError:
             return None, None
-        email, password = decoded_base64_authorization_header.split(":")
-        return email, password
 
     def user_object_from_credentials(
             self,
