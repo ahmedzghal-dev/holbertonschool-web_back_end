@@ -17,7 +17,7 @@ class Auth():
         Define which routes don't need authentication
         """
 
-        if not path:
+        if path is None:
             return True
 
         if not excluded_paths or not excluded_paths:
