@@ -16,17 +16,13 @@ class Auth():
         require auth function
         Define which routes don't need authentication
         """
-
         if path is None:
             return True
-
-        if not excluded_paths or not excluded_paths:
+        if excluded_paths is None or len(excluded_paths) == 0:
             return True
-
         for excluded_path in excluded_paths:
             if path == excluded_path or path.startswith(excluded_path[:-1]):
                 return False
-
         return True
 
     def authorization_header(self, request=None) -> str:

@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
-auth_type == getenv("AUTH_TYPE")
+auth_type = getenv("AUTH_TYPE")
 if auth_type == 'basic_auth':
     auth = BasicAuth()
 else:
@@ -31,21 +31,23 @@ def not_found(error) -> str:
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
-    """ Not found handler
+    """ Unauthorized handler
     """
     return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
-    """ Not found handler
+    """ Forbidden handler
     """
     return jsonify({"error": "Forbidden"}), 403
 
 
 @app.before_request
-def handler_before_request() -> None:
-    """ the Flask method before_request"""
+def handle_before_request() -> None:
+    """
+    Request validation!
+    """
     if auth is None:
         return
     excluded_paths = [
