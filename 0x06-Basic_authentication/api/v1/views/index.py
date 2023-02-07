@@ -20,7 +20,7 @@ def unauthorized() -> str:
     Return:
       - the unauthorized of the API
     """
-    abort(401, description='Unauthorized')
+    abort(401)
 
 
 @app_views.route('/stats/', strict_slashes=False)
