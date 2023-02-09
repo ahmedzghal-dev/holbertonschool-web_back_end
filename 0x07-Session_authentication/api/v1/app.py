@@ -46,7 +46,7 @@ def forbidden(error) -> str:
 @app.before_request
 def handle_before_request() -> None:
     """
-    Request validation!
+    execute before each request
     """
     if auth is None:
         return
