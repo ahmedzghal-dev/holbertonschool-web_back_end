@@ -44,7 +44,7 @@ def forbidden(error) -> str:
 
 
 @app.before_request
-def handle_before_request() -> None:
+def handle_before_request():
     """
     Request validation!
     """
