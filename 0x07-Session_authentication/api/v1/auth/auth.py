@@ -6,41 +6,37 @@ from flask import request
 from typing import List, TypeVar
 
 
-class Auth():
-    """
-    auth class description
+class Auth:
+    """ 
+    auth class description 
     """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
+        """Check if path is in the list of excluded paths
         """
-        require auth function
-        Define which routes don't need authentication
-        """
-        if path is None:
+        if not path or not excluded_paths:
             return True
-        if excluded_paths is None or len(excluded_paths) == 0:
-            return True
-        for excluded_path in excluded_paths:
-            if excluded_path.endswith("*"):
-                if path.startswith(excluded_path[:-1]):
-                    return False
-            elif path == excluded_path:
+        if path[-1] != '/':
+            path += '/'
+        for p in excluded_paths:
+            if path[:p.find('*')] in p[:p.find('*')]:
                 return False
         return True
 
     def authorization_header(self, request=None) -> str:
+        """Return authorization header
         """
-        authorization_header function
-        """
-        if request is None:
+        if not request:
             return None
-        if "Authorization" not in request.headers:
-            return None
-        return request.headers["Authorization"]
+        return request.headers.get('Authorization')
 
     def current_user(self, request=None) -> TypeVar('User'):
+        """Return None
         """
-        get current user function
-        """
-
         return None
+
+    def session_cookie(self, request=None):
+        """Return a cookie value from a request
+        """
+        if request:
+            return request.cookies.get(getenv('SESSION_NAME'))
