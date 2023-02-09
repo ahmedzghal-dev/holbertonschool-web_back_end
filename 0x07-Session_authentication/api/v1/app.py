@@ -18,7 +18,7 @@ auth = None
 auth_type = getenv("AUTH_TYPE")
 if auth_type == 'basic_auth':
     auth = BasicAuth()
-elif:
+else:
     auth = Auth()
 
 
