@@ -10,7 +10,6 @@ AUTH = Auth()
 @app.route('/', methods=['GET'])
 def index():
     return jsonify({"message": "Bienvenue"})
-
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users() -> str:
     """ users """
