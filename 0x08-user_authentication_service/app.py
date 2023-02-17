@@ -25,6 +25,7 @@ def users():
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
+
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> str:
     """Login method"""
@@ -41,6 +42,7 @@ def login() -> str:
     else:
         abort(401)
 
+
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
     """function to respond to the DELETE /sessions route."""
@@ -50,6 +52,16 @@ def logout() -> str:
         abort(403)
     AUTH.destroy_session(user.id)
     return redirect('/')
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> str:
+    """USEr profile function"""
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if session_id is None or user is None:
+        abort(403)
+    return jsonify({"email": user.email}), 200
 
 
 if __name__ == "__main__":
