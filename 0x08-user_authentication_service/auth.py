@@ -40,7 +40,7 @@ class Auth:
             raise ValueError(f'User {email} already exists')
 
     def valid_login(self, email: str, password: str) -> bool:
-        """login"""
+        """login method"""
         try:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
@@ -48,7 +48,7 @@ class Auth:
         return bcrypt.checkpw(password.encode(), user.hashed_password)
 
     def create_session(self, email: str) -> str:
-        """ create session """
+        """create session method"""
         try:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
