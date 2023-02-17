@@ -32,3 +32,13 @@ class Auth:
             return new_registry
         else:
             raise ValueError(f'User {email} already exists')
+
+    def valid_login(self, email, password) -> bool:
+        """login"""
+        user = self._db.get_user(email)
+        if user:
+            hashed_password = user["password"].encode('utf-8')
+            password = password.encode('utf-8')
+            return bcrypt.checkpw(password, hashed_password)
+        else:
+            return False
