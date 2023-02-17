@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """AUTH module"""
-import bcrypt
 from db import DB
+import bcrypt
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
 from uuid import uuid4
-from typing import Union
 
 
 def _hash_password(password: str) -> bytes:
@@ -58,7 +57,7 @@ class Auth:
         self._db.update_user(user.id, session_id=session_id)
         return session_id
 
-    def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
+    def get_user_from_session_id(self, session_id) -> User:
         """Find user by session ID"""
         try:
             return self._db.find_user_by(session_id=session_id)
