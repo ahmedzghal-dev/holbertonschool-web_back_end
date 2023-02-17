@@ -43,7 +43,7 @@ def login() -> str:
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
-    """logout function"""
+    """function to respond to the DELETE /sessions route."""
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
     if session_id is None or user is None:
