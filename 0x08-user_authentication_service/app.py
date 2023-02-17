@@ -8,19 +8,20 @@ AUTH = Auth()
 
 
 @app.route('/', methods=['GET'])
-def index() -> str:
+def index():
     """index"""
     return jsonify({"message": "Bienvenue"})
 
-@app.route('/users', methods=['POST'], strict_slashes=False)
-def users() -> str:
-    """ users """
-    email = request.form.get('email')
-    password = request.form.get('password')
+
+@app.route('/users', methods=['POST'])
+def users():
+    """users"""
+    email = request.form.get("email")
+    password = request.form.get("password")
 
     try:
-        AUTH.register_user(email, password)
-        return jsonify({'email': email, 'message': 'user created'})
+        AUTH.register(email, password)
+        return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
