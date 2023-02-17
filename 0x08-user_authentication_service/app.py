@@ -65,7 +65,7 @@ def profile() -> str:
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
 def get_reset_password_token() -> str:
-    """generating a token and get the famous respond 200 http status code"""
+    """Get reset password token"""
     try:
         email = request.form.get('email')
         token = AUTH.get_reset_password_token(email)
