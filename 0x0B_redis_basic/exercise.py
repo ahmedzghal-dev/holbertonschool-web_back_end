@@ -6,6 +6,24 @@ from functools import wraps
 from typing import Callable, Union
 
 
+def count_calls(method: Callable) -> Callable:
+    """count_calls
+    decorator that takes a single method
+    Callable argument and returns a Callable.
+    """
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """ Incrementing values"""
+        key = method.__qualname__
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+    return wrapper
+
+
+def call_history(method: Callable) -> Callable:
+    return
+
+
 class Cache:
     """Cache class"""
     def __init__(self):
@@ -21,3 +39,24 @@ class Cache:
         key = str(uuid.uuid1())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str, fn=None) -> str:
+        """take a key string argument and
+        an optional Callable argument"""
+        if (self._redis.exists(key)):
+            value = self._redis.get(key)
+            if fn is None:
+                return value
+
+            return fn(value)
+        return None
+
+    def get_str(self, key: str) -> str:
+        """parametrize Cache.get with
+        the correct conversion function."""
+        return self.get(key, str)
+
+    def get_int(self, key: str) -> int:
+        """parametrize Cache.get with
+        the correct conversion function."""
+        return self.get(key, int)
