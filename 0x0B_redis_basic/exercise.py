@@ -2,6 +2,8 @@
 """Writing strings to Redis"""
 import redis
 import uuid
+from functools import wraps
+from typing import Callable, Union
 
 
 class Cache:
