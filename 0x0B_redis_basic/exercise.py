@@ -25,6 +25,7 @@ def call_history(method: Callable) -> Callable:
     inputs and outputs for a particular function"""
     @wraps(method)
     def wrapper(self, *args, **kwds):
+        """Wrapper function"""
         in_list_name = "{}:inputs".format(method.__qualname__)
         out_list_name = "{}:outputs".format(method.__qualname__)
 
