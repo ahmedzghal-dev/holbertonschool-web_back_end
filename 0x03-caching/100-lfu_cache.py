@@ -2,72 +2,49 @@
 """
 LFU Caching
 """
-import time
-
-
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """
-        LFUCache class.
-    """
+    ''' LFUCache class '''
 
     def __init__(self):
-        """
-            Initialize.
-        """
+        ''' init constructor '''
+        self.queue = []
+        self.lfu = {}
         super().__init__()
-        self.keys_usage_frequency = {}
 
     def put(self, key, item):
-        """
-            Add an item in the cache.
-        """
-        if not (key is None or item is None):
-            if (
-                len(self.cache_data.keys()) == BaseCaching.MAX_ITEMS and
-                (key not in self.cache_data.keys())
-            ):
-                ordered_keys_by_value = {
-                    k: v for k, v in sorted(
-                        self.keys_usage_frequency.items(), key=lambda el: el['usage'][1]
-                    )
-                }
-                lfu = list(ordered_keys_by_value.keys())[0]
-                print('DISCARD: {}'.format(lfu))
-                del self.keys_usage_frequency[lfu]
-                del self.cache_data[lfu]
-                self.keys_usage_frequency[key] = {
-                    'time': time.time(),
-                    'usage': 1
-                }
-                self.cache_data[key] = item
-            elif (
-                len(self.cache_data.keys()) == BaseCaching.MAX_ITEMS and
-                (key in self.cache_data.keys())
-            ):
-                self.keys_usage_frequency[key] = {
-                    'time': time.time(),
-                    'usage': self.keys_usage_frequency[key]['usage'] + 1
-                }
-                self.cache_data[key] = item
+        ''' Assigns the item to the dictionary '''
+        if key and item:
+            if (len(self.queue) >= self.MAX_ITEMS and
+                    not self.cache_data.get(key)):
+                delete = self.queue.pop(0)
+                self.lfu.pop(delete)
+                self.cache_data.pop(delete)
+                print('DISCARD: {}'.format(delete))
+
+            if self.cache_data.get(key):
+                self.queue.remove(key)
+                self.lfu[key] += 1
             else:
-                self.keys_usage_frequency[key] = {
-                    'time': time.time(),
-                    'usage': 1
-                }
-                self.cache_data[key] = item
+                self.lfu[key] = 0
+
+            insert_index = 0
+            while (insert_index < len(self.queue) and
+                   not self.lfu[self.queue[insert_index]]):
+                insert_index += 1
+            self.queue.insert(insert_index, key)
+            self.cache_data[key] = item
 
     def get(self, key):
-        """
-            Get an item by key.
-        """
-        if key not in self.cache_data.keys():
-            return None
-        else:
-            self.keys_usage_frequency[key] = {
-                'time': time.time(),
-                'usage': self.keys_usage_frequency[key]['usage'] + 1
-            }
-            return self.cache_data[key]
+        ''' Returns the value associated with the given key '''
+        if self.cache_data.get(key):
+            self.lfu[key] += 1
+            if self.queue.index(key) + 1 != len(self.queue):
+                while (self.queue.index(key) + 1 < len(self.queue) and
+                       self.lfu[key] >=
+                       self.lfu[self.queue[self.queue.index(key) + 1]]):
+                    self.queue.insert(self.queue.index(key) + 1,
+                                      self.queue.pop(self.queue.index(key)))
+        return self.cache_data.get(key)
